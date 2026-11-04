@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Finance Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Personal Finance Tracker</h1>
+      <p class="sub">Log income and expenses in ₹, set monthly budgets, see where the money goes.</p>
+    </div>
+    <label>Month <input type="month" id="month" required></label>
+  </header>
+
+  <section class="stats" aria-label="Monthly summary">
+    <div class="pill p1"><span>Income</span><strong id="income">₹0</strong></div>
+    <div class="pill p2"><span>Expenses</span><strong id="expense">₹0</strong></div>
+    <div class="pill p3"><span>Savings</span><strong id="savings">₹0</strong></div>
+    <div class="pill p4"><span>Savings rate</span><strong id="rate">0%</strong></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Add a transaction</h2>
+      <form id="txForm">
+        <div class="row">
+          <label>Type <select name="type" id="type"><option>Expense</option><option>Income</option></select></label>
+          <label>Date <input type="date" name="date" id="date" required></label>
+        </div>
+        <div class="row">
+          <label>Category <select name="category" id="category"></select></label>
+          <label>Amount (₹) <input type="number" name="amount" min="0.01" step="0.01" required></label>
+        </div>
+        <label>Description <input type="text" name="description" maxlength="200" placeholder="Optional"></label>
+        <button type="submit">Add transaction</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Monthly budgets</h2>
+      <div id="budgets"></div>
+      <form id="budForm">
+        <div class="row">
+          <label>Category <select name="category" id="budCategory"></select></label>
+          <label>Limit (₹) <input type="number" name="monthly_limit" min="1" step="1" required></label>
+        </div>
+        <label>Warn me at (% of limit) <input type="number" name="pct" value="80" min="1" max="100" required></label>
+        <button type="submit">Save budget</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Where the money went</h2>
+      <img id="chart" alt="Donut chart of this month's expenses by category" width="100%">
+    </section>
+
+    <section class="panel">
+      <h2>Month-wise savings</h2>
+      <div class="trend" id="trend"></div>
+      <p class="sub">Last six months up to the selected month. Bars: income in sand, expenses in burgundy. The amount under each month is its savings (income minus expenses).</p>
+    </section>
+
+    <section class="panel wide">
+      <h2>Receipts</h2>
+      <div class="rc">
+        <form id="rcForm">
+          <div class="row">
+            <label>Shop <input name="shop" maxlength="80" required></label>
+            <label>Date <input type="date" name="date" id="rcDate" required></label>
+          </div>
+          <div class="row">
+            <label>Category <select name="category" id="rcCategory"></select></label>
+            <label>Amount (₹) <input type="number" name="amount" min="0.01" step="0.01" required></label>
+          </div>
+          <label>Receipt image (PNG, JPG or WebP, up to 5 MB) <input type="file" name="image" accept="image/png,image/jpeg,image/webp" required></label>
+          <button type="submit">Save receipt</button>
+        </form>
+        <div>
+          <p class="sub" id="rcLine"></p>
+          <div id="rcShops"></div>
+          <p class="sub" id="rcLargest"></p>
+        </div>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <section class="panel wide">
+      <div class="bar">
+        <h2>Transactions</h2>
+        <label>Show <select id="filter"><option value="">All</option><option>Income</option><option>Expense</option></select></label>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="amt">Amount</th><th><span class="sr">Actions</span></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="none" hidden>No transactions this month. Add one using the form above.</p>
+    </section>
+  </div>
+</div>
+<dialog id="alertBox" aria-labelledby="alertTitle">
+  <div class="dlg">
+    <h2 id="alertTitle"></h2>
+    <p id="alertMsg"></p>
+    <button type="button" id="alertOk">Got it</button>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
