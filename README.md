@@ -1,7 +1,5 @@
 # Personal Finance Tracker (Java)
 
-Java port of the Python/Flask app. Same web page, same features, same `/api/...` endpoints.
-
 ## Run it
 
 You need **JDK 17 or newer** and **Maven**.
